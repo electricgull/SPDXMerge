@@ -25,6 +25,7 @@ Execute the command with the required inputs.
   
 ```shell
     python src/SPDXMerge --docpath <folder path of the SBOMs to be merged>
+                         --outpath <folder path where the merged file will be saved> (optional)
                          --name <product name>
                          --mergetype <0 for deep merge/1 for shallow merge>
                          --author <organization or author name>
@@ -39,7 +40,7 @@ Execute the command with the required inputs.
   - name: Checkout project
     uses: actions/checkout@v3
   - name: Run SPDX Merge tool to merge spdx files 
-    uses: philips-software/SPDXMerge@v0.1
+    uses: philips-software/SPDXMerge@v0.2.0
     with:
       docpath: ${{github.workspace}}/Test # path with spdx files in json
       name: sample-sbom                   # name project
@@ -55,15 +56,18 @@ Execute the command with the required inputs.
 ### Docker image
 
 ```shell
-docker run -it --rm -v$(PWD):/code \
+docker run -it --rm \
+  -v $(PWD):/code \
+  -v $(PWD)/output/:/output \
   -e DOCPATH='/code' \
+  -e OUTPATH='/output' \
   -e NAME='' \
   -e MERGETYPE='' \
   -e AUTHOR='' \
   -e EMAIL='' \
   -e DOCNAMESPACE='' \
   -e FILETYPE='' \
-  docker.io/philipssoftware/spdxmerge:v0.1.0
+  docker.io/philipssoftware/spdxmerge:v0.2.0
 ```
 
 ## TODOs
